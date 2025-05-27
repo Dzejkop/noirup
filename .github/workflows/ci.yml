@@ -25,14 +25,13 @@ jobs:
     steps:
       - name: Checkout sources
         id: get_versions
-        run: |         
+        run: |
           # gh returns the Noir releases in reverse chronological order so we keep all releases published after the minimum supported version.
           VERSIONS=$(gh release list -R noir-lang/noir --exclude-pre-releases --json tagName -q 'map(.tagName) | index(env.MINIMUM_NOIR_VERSION) as $index | if $index then .[0:$index+1] else [env.MINIMUM_NOIR_VERSION] end')
           echo "versions=$VERSIONS"
           echo "versions=$VERSIONS" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}
-
 
   install:
     name: Noir ${{matrix.toolchain}} (CLI) on ${{matrix.os == 'ubuntu' && 'Linux' || matrix.os == 'macos' && 'macOS' || matrix.os == 'windows' && 'Windows' || '???'}}
@@ -44,13 +43,13 @@ jobs:
         os: [ubuntu, macos]
         toolchain: ${{ fromJson( needs.noir-version-list.outputs.noir_versions )}}
         include:
-          - os: ubuntu 
+          - os: ubuntu
             toolchain: nightly
-          - os: ubuntu 
+          - os: ubuntu
             toolchain: stable
-          - os: macos 
+          - os: macos
             toolchain: nightly
-          - os: macos 
+          - os: macos
             toolchain: stable
     timeout-minutes: 45
     steps:
@@ -179,13 +178,13 @@ jobs:
         os: [ubuntu, macos]
         toolchain: ${{ fromJson( needs.noir-version-list.outputs.noir_versions )}}
         include:
-          - os: ubuntu 
+          - os: ubuntu
             toolchain: nightly
-          - os: ubuntu 
+          - os: ubuntu
             toolchain: stable
-          - os: macos 
+          - os: macos
             toolchain: nightly
-          - os: macos 
+          - os: macos
             toolchain: stable
     timeout-minutes: 45
     steps:
